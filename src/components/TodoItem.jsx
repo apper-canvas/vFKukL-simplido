@@ -19,7 +19,7 @@ const TodoItem = ({ todo }) => {
         type="checkbox"
         checked={todo.completed}
         onChange={() => toggleTodo(todo.id)}
-        className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+        className="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
       />
       
       <div className="ml-3 flex-1">

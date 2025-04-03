@@ -32,7 +32,7 @@ const TodoList = () => {
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="text-sm border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
             >
               <option value="all">All</option>
               <option value="active">Active</option>
@@ -43,7 +43,7 @@ const TodoList = () => {
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+            className="text-sm border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
           >
             <option value="all">All Categories</option>
             <option value="personal">Personal</option>

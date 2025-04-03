@@ -8,7 +8,7 @@ function App() {
   return (
     <TodoProvider>
       <Router>
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-purple-50">
           <Navbar />
           <div className="container mx-auto px-4 py-8">
             <Routes>
