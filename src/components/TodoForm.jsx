@@ -1,90 +1,65 @@
-import { useState } from 'react';
-import { useTodo } from '../context/TodoContext';
-import { PlusCircle } from 'lucide-react';
-
-const categories = [
-  'Work', 'Personal', 'Health', 'Family', 'Home', 
-  'Finance', 'Education', 'Travel', 'Shopping', 'Other'
-];
+import { useState, useContext } from 'react';
+import { Plus } from 'lucide-react';
+import { TodoContext } from '../context/TodoContext';
 
 const TodoForm = () => {
-  const { addTodo } = useTodo();
+  const { addTodo } = useContext(TodoContext);
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('Personal');
-  
+  const [category, setCategory] = useState('personal');
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    if (!title.trim()) return;
-    
-    addTodo({
-      title: title.trim(),
-      description: description.trim(),
-      category
-    });
-    
-    // Reset form
-    setTitle('');
-    setDescription('');
-    setCategory('Personal');
+    if (title.trim()) {
+      addTodo({
+        title,
+        category,
+      });
+      setTitle('');
+      setCategory('personal');
+    }
   };
-  
+
   return (
-    <div className="card">
-      <h2 className="text-xl font-semibold mb-4">Add New Task</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-            Task Title *
-          </label>
-          <input
-            type="text"
-            id="title"
-            className="form-input"
-            placeholder="What needs to be done?"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </div>
-        
-        <div className="mb-4">
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-            Description
-          </label>
-          <textarea
-            id="description"
-            className="form-input resize-none"
-            placeholder="Add details..."
-            rows="3"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        
-        <div className="mb-6">
-          <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
-            Category
-          </label>
-          <select
-            id="category"
-            className="form-input"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            {categories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
-        </div>
-        
-        <button type="submit" className="btn btn-primary w-full flex items-center justify-center">
-          <PlusCircle className="mr-2 h-5 w-5" />
-          Add Task
-        </button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className="card mb-6">
+      <h2 className="text-xl font-semibold mb-4">Add New Todo</h2>
+      <div className="mb-4">
+        <label htmlFor="title" className="block mb-2 font-medium text-gray-700">
+          Todo Title
+        </label>
+        <input
+          type="text"
+          id="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="input"
+          placeholder="Enter todo title"
+          required
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="category" className="block mb-2 font-medium text-gray-700">
+          Category
+        </label>
+        <select
+          id="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="input"
+        >
+          <option value="personal">Personal</option>
+          <option value="work">Work</option>
+          <option value="study">Study</option>
+          <option value="health">Health</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <button type="submit" className="btn btn-primary flex items-center">
+        <Plus className="h-5 w-5 mr-1" />
+        Add Todo
+      </button>
+    </form>
   );
 };
 

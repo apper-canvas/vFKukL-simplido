@@ -1,58 +1,77 @@
-import { useState } from 'react';
-import { useTodo } from '../context/TodoContext';
+import { useState, useContext } from 'react';
+import { TodoContext } from '../context/TodoContext';
 import TodoItem from './TodoItem';
+import { Filter } from 'lucide-react';
 
 const TodoList = () => {
-  const { todos, getCompletedTodos, getActiveTodos } = useTodo();
+  const { todos } = useContext(TodoContext);
   const [filter, setFilter] = useState('all');
-  
-  const filteredTodos = () => {
-    switch (filter) {
-      case 'active':
-        return getActiveTodos();
-      case 'completed':
-        return getCompletedTodos();
-      default:
-        return todos;
-    }
-  };
+  const [categoryFilter, setCategoryFilter] = useState('all');
+
+  const filteredTodos = todos.filter(todo => {
+    const statusMatch = 
+      filter === 'all' || 
+      (filter === 'active' && !todo.completed) || 
+      (filter === 'completed' && todo.completed);
+    
+    const categoryMatch = 
+      categoryFilter === 'all' || 
+      todo.category === categoryFilter;
+    
+    return statusMatch && categoryMatch;
+  });
 
   return (
     <div className="card">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">My Tasks</h2>
-        <div className="flex space-x-2">
-          <button
-            className={`btn ${filter === 'all' ? 'btn-primary' : 'btn-secondary'}`}
-            onClick={() => setFilter('all')}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold">My Todos</h2>
+        
+        <div className="flex flex-col sm:flex-row mt-3 sm:mt-0 space-y-2 sm:space-y-0 sm:space-x-2">
+          <div className="flex items-center">
+            <Filter className="h-5 w-5 text-gray-500 mr-1" />
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="all">All</option>
+              <option value="active">Active</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+          
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
           >
-            All
-          </button>
-          <button
-            className={`btn ${filter === 'active' ? 'btn-primary' : 'btn-secondary'}`}
-            onClick={() => setFilter('active')}
-          >
-            Active
-          </button>
-          <button
-            className={`btn ${filter === 'completed' ? 'btn-primary' : 'btn-secondary'}`}
-            onClick={() => setFilter('completed')}
-          >
-            Completed
-          </button>
+            <option value="all">All Categories</option>
+            <option value="personal">Personal</option>
+            <option value="work">Work</option>
+            <option value="study">Study</option>
+            <option value="health">Health</option>
+            <option value="other">Other</option>
+          </select>
         </div>
       </div>
-      
-      <div className="divide-y divide-gray-100">
-        {filteredTodos().length > 0 ? (
-          filteredTodos().map(todo => (
+
+      <div className="border rounded-md">
+        {filteredTodos.length > 0 ? (
+          filteredTodos.map(todo => (
             <TodoItem key={todo.id} todo={todo} />
           ))
         ) : (
-          <div className="p-6 text-center text-gray-500">
-            No tasks found. {filter !== 'all' && <span>Try changing the filter or add a new task.</span>}
+          <div className="p-8 text-center text-gray-500">
+            <p>No todos found.</p>
+            {filter !== 'all' || categoryFilter !== 'all' ? (
+              <p className="mt-1 text-sm">Try adjusting your filters.</p>
+            ) : null}
           </div>
         )}
+      </div>
+      
+      <div className="mt-4 text-sm text-gray-600">
+        {todos.length} total todos • {todos.filter(t => t.completed).length} completed
       </div>
     </div>
   );
