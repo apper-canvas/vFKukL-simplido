@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import { sampleTodos } from '../data/sampleTodos';
+import { calculateStreakMetrics } from '../utils/streakCalculator';
 
 export const TodoContext = createContext();
 
@@ -9,9 +10,25 @@ export const TodoProvider = ({ children }) => {
     return savedTodos ? JSON.parse(savedTodos) : sampleTodos;
   });
 
+  const [streakStats, setStreakStats] = useState({
+    currentStreak: 0,
+    longestStreak: 0,
+    totalCompletedTasks: 0,
+    weeklyCompletion: 0,
+    dailyActivity: {},
+    completionByDay: {}
+  });
+
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos));
+    // Update streak metrics whenever todos change
+    updateStreakMetrics();
   }, [todos]);
+
+  const updateStreakMetrics = () => {
+    const metrics = calculateStreakMetrics(todos);
+    setStreakStats(metrics);
+  };
 
   const addTodo = (todo) => {
     const newTodo = {
@@ -45,7 +62,13 @@ export const TodoProvider = ({ children }) => {
   };
 
   return (
-    <TodoContext.Provider value={{ todos, addTodo, toggleTodo, deleteTodo }}>
+    <TodoContext.Provider value={{ 
+      todos, 
+      addTodo, 
+      toggleTodo, 
+      deleteTodo,
+      streakStats
+    }}>
       {children}
     </TodoContext.Provider>
   );

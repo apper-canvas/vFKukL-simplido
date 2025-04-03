@@ -2,30 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-800;
+  }
 }
 
 @layer components {
+  .card {
+    @apply bg-white p-6 rounded-lg shadow-sm;
+  }
+  
   .btn {
-    @apply px-4 py-2 rounded font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors;
+    @apply px-4 py-2 rounded-md font-medium transition-colors duration-200;
   }
   
   .btn-primary {
-    @apply bg-purple-600 text-white hover:bg-purple-700 focus:ring-purple-500;
+    @apply bg-purple-600 text-white hover:bg-purple-700;
   }
   
-  .btn-danger {
-    @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
-  }
-  
-  .card {
-    @apply bg-white rounded-lg shadow-md p-6;
-  }
-  
-  .input {
-    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500;
+  .arrow-down {
+    @apply border-solid border-transparent border-t-gray-800;
+    width: 0; 
+    height: 0; 
+    border-width: 6px 6px 0 6px;
+    margin: 0 auto;
   }
 }

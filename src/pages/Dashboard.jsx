@@ -2,10 +2,11 @@ import { useContext } from 'react';
 import { TodoContext } from '../context/TodoContext';
 import PieChart from '../components/charts/PieChart';
 import BarChart from '../components/charts/BarChart';
+import StreakStats from '../components/statistics/StreakStats';
 import { CheckSquare, Clock, ChevronRight } from 'lucide-react';
 
 const Dashboard = () => {
-  const { todos } = useContext(TodoContext);
+  const { todos, streakStats } = useContext(TodoContext);
   
   const completedTodos = todos.filter(todo => todo.completed);
   const pendingTodos = todos.filter(todo => !todo.completed);
@@ -65,6 +66,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      
+      {/* Streak Stats Section */}
+      <StreakStats streakStats={streakStats} />
       
       {/* Charts section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
